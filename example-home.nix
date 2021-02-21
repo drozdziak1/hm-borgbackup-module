@@ -2,9 +2,11 @@
 
 {
 
-  imports = [
-    ./hm-borgbackup.nix
-  ];
+  imports = let
+    hm-borgbackup-module = builtins.fetchGit "https://github.com/drozdziak1/hm-borgbackup-module";
+  in
+    [ "${hm-borgbackup-module}/borgbackup.nix" ];
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 

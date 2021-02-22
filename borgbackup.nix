@@ -112,6 +112,10 @@ let
   in
     nameValuePair jobName {
       Timer = { OnCalendar = cfg.startAt; OnActiveSec = 5; };
+      Install = {
+        WantedBy =
+          [ "timers.target" ];
+      };
     };
 
   # utility function around makeWrapper
@@ -717,7 +721,11 @@ in
               # // mapAttrs' mkRepoService repos
             );
           in
-            builtins.mapAttrs (job: value: { Service = value.serviceConfig; }) full;
+            builtins.mapAttrs (
+              job: value: {
+                Service = value.serviceConfig;
+              }
+            ) full;
 
         systemd.user.timers = mapAttrs' mkBackupTimer jobs;
       }
